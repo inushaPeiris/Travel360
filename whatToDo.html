@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <title>What To Do</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+    <!-- link the google meterial icons to the website -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+  </head>
+
+  <body>
+
+    <!-- Menu Bar -->
+    <nav>
+        <div class="logoo"> Travel</div>
+        <img src="/Assets/360.png" alt="logo">
+        <ul>
+            <li><a href="http://127.0.0.1:5501/home.html"> HOME </a></li>
+            <li><a href="http://127.0.0.1:5501/whereToGo.html"> WHERE TO GO </a></li>
+            <li><a href="http://127.0.0.1:5501/whatToDo.html"> WHAT TO DO </a></li>
+            <li><a href="http://127.0.0.1:5501/aboutUs.html"> ABOUT US </a></li>
+            <li><a href="http://127.0.0.1:5501/contactUS.html"> CONTACT US </a></li>
+        </ul>
+    </nav>
+
+    <br><br><br><br>
+    
+    <main id="todolist">
+          
+        <!--Heading of To Do list-->     
+      <h1>Plan Your Tour</h1>
+          
+
+      <transition-group name="todolist" tag="ul">
+
+        <li id="li7" v-for="item in todoByStatus" v-bind:class="item.done ? 'done' : ''" v-bind:key="item.id" >
+          
+          <span class="label">
+            {{item.label}}
+          </span>
+            
+          <div class="actions">
+            <button class="btn-picto" type="button" v-on:click="deleteItemFromList(item)" aria-label="Delete" title="Delete">
+              <i aria-hidden="true" class="material-icons">delete</i>
+            </button>
+          </div>
+
+        </li>
+      
+      </transition-group>
+              
+      <form name="newform" v-on:submit.prevent="addItem">
+              
+        <label for="">
+          Add to the todo list
+        </label>
+              
+        <input type="text" name="newitem" id="newitem" v-model="newitem"  required>
+              
+        <button type="submit">
+          Add Place
+        </button>
+
+      </form>
+          
+      <!-- Vue Js  -->
+      <script>
+        Vue.component({
+          props: ['label', 'name'],
+          model: {
+          prop: 'checked',
+          event: 'change'
+          },
+          data: function() {
+            return {
+              isactive:false
+            }
+          },
+          methods: {
+            onToogle: function() {
+              this.$emit('clicked', this.isactive)
+            }
+          }       
+        });
+
+        var todolist = new Vue({
+          el: '#todolist',
+          data: {
+            newitem:'',
+            sortByStatus:false,
+            todo: []
+          },
+          methods: {
+            addItem: function() {
+              this.todo.push({id: Math.floor(Math.random() * 9999) + 10, label: this.newitem, done: false});
+              this.newitem = '';
+            },
+            markAsDoneOrUndone: function(item) {
+              item.done = !item.done;
+            },
+            deleteItemFromList: function(item) {
+              let index = this.todo.indexOf(item)
+              this.todo.splice(index, 1);
+            },
+            clickontoogle: function(active) {
+              this.sortByStatus = active;
+            }
+          },
+          computed: {
+            todoByStatus: function() {
+
+              if(!this.sortByStatus) {
+                return this.todo;
+              }
+
+              var sortedArray = []
+              var doneArray = this.todo.filter(function(item) { return item.done; });
+              var notDoneArray = this.todo.filter(function(item) { return !item.done; });
+      
+              sortedArray = [...notDoneArray, ...doneArray];
+        
+              return sortedArray;
+            } 
+          }
+        });
+      </script>
+            
+    </main>
+
+    <footer class="footer">
+        <div class="container2">
+            <div class="footer-col">
+
+                <h4>hot lines</h4>
+
+                <ul>
+                    <lh>tourism hotline</lh>
+                    <li>
+                        <a href="tel:1919">1919</a>
+                    </li>
+                </ul>
+
+                <ul>
+                    <lh>ambulance service</lh>
+                    <li>
+                        <a href="tel:1990">1990</a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="footer-col">
+                <h4>quick links</h4>
+                <ul>
+                    <!-- I have to give quick links to the pages of the side -->
+                    <li><a href="http://127.0.0.1:5500/Where%20to%20Go.html">picturesque places</a></li>
+                    <li><a href="http://127.0.0.1:5500/What%20to%20do.html">plan your trip</a></li>
+                    <li><a href="http://127.0.0.1:5500/ContactUs.html">complaints</a></li>
+                    <li><a href="http://127.0.0.1:5500/AboutUs.html">about us</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>other sites</h4>
+                <ul>
+                    <li><a href="https://www.tourismmin.gov.lk/" target="blank">ministry of tourism</a></li>
+                    <li><a href="https://www.srilankan.com/en_uk/lk" target="blank">sri lanka airlines</a></li>
+                    <li><a href="https://www.sltda.gov.lk/en" target="blank">sri lanka tourism development authority</a></li>
+                    <li><a href="https://slithm.edu.lk/" target="blank">sri lanka institute so tourism & hotel management</a></li>
+                    <li><a href="https://immigration.gov.lk/" target="blank">department of immigration and emigration</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>follow us</h4>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/" target="blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.twitter.com/" target="blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/" target="blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/" target="blank"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- internal CSS part 2-->
+    <style>
+        * {
+          margin:0;
+          padding:0;
+          font-family: Sans-serif;
+        }
+        /* body styles */
+        body{
+            background-image: url(/Assets/bgimg.jpg);
+            background-size: 100%;
+            font-size: 14px;
+            font-family: Arial;
+            line-height: 1.5;
+            font-family: Arial;
+        }
+
+        /* navigation bar styles */
+        nav{
+            margin-top: 0px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            padding: 10px 90px;
+            box-sizing: border-box;
+            background: rgb(255, 255, 255); 
+        }
+        nav .logoo{
+            height: 50px;
+            float: left;
+            font-size: 40px;
+            font-weight: bold;
+            color: #0e3363;
+            margin-top: 15px;
+        }
+        nav img{
+            height: 70px;
+            float: left;
+        }
+        nav ul{
+            list-style: none;
+            float: right;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li a{
+            line-height: 80px;
+            color: #000000;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        nav ul li a:hover{
+            background: #00b300;
+            border-radius: 6px;
+        }
+        .imagecontainer{
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to top, rgba(0,0,0,0.4)50%, rgba(0,0,0,0.4)50%), url(Assets/bridge.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+        #topic1{
+            margin-top: 10px;
+            color: white;
+            font-size: 50px;
+        }
+        #packages {
+            font-size: 40px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        #topic2{
+            margin-top: 60px;
+            font-size: 30px;
+        }
+        #p1{
+            font-size: 20px;
+            text-align: center;
+            margin-left: 100px;
+            margin-right: 100px;
+            margin-bottom: 60px;
+        }            
+
+        /* body stules */
+        body{
+            background-image: url(/Assets/bgimg.jpg);
+            background-size: 100%;
+            font-size: 14px;
+            font-family: Arial;
+            line-height: 1.5;
+            font-family: Arial;
+        }
+
+        /* todo list styles */
+        #todolist {
+            margin:4rem auto;
+            padding:2rem 3rem 3rem;
+            max-width:500px;
+            background-color: #ffffff5d;
+            border-radius: 25px;
+            color:rgb(255, 255, 255);
+        }
+
+        #todolist h1 {
+            font-weight:bold;
+            font-size: 36px;
+            letter-spacing:0.05em;
+            border-bottom:1px solid rgba(255,255,255,.3); 
+            color: #ffffff;
+        }
+
+        #todolist h1 span {
+            display:block;
+            font-size:0.8rem;
+            margin-bottom:0.7rem;
+            margin-left:3px;
+            margin-top:0.2rem;   
+        }
+
+        #todolist .emptylist {
+            margin-top:2.6rem;
+            text-align:center;
+            letter-spacing:.05em;
+            font-style:italic;
+            opacity:0.8;
+          
+        }
+
+        #todolist ul {
+            margin-top:2.6rem;
+            list-style:none;
+        }
+
+        #todolist .todolist-move {
+            transition: transform 1s;
+        }
+
+        #li7 {
+            display:flex;
+            margin:0 -3rem 4px;
+            padding:1.1rem 3rem;
+            justify-content:space-between;
+            align-items:center;
+            background:rgba(255,255,255,0.1);
+        }
+
+        #todolist .actions {
+            flex-shrink:0;
+            padding-left:0.7em;
+        }
+
+        #todolist .label {
+            position:relative;
+            transition:opacity .2s linear;
+        }
+
+        #todolist .done .label {
+            opacity:.6;
+        }
+
+        #todolist .done .label:before {
+            content:'';
+            position:absolute;
+            top:50%;
+            left:-.5rem;
+            display:block;
+            width:0%;
+            height:1px;
+            background:#FFF;	
+        }
+
+        #todolist .btn-picto {
+            border:none;
+            background:none;
+            -webkit-appearance:none;
+            cursor:pointer;
+            color:#FFF;
+        }
+
+        form {
+            margin-top:3rem;
+            display:flex;
+            flex-wrap:wrap;
+        }
+
+        form label {
+            min-width:100%;
+            margin-bottom:.5rem;
+            font-size:1.3rem;
+            color: #ffffff;
+        }
+
+        form input {
+            flex-grow:1;
+            border:none;
+            background:#f7f1f1;
+            padding:0 1.5em;
+            font-size:initial;
+        }
+
+        form button {
+            padding:0 1.3rem;
+            border:none;
+            background:#007c1f;
+            color:rgb(255, 255, 255);
+            text-transform:uppercase;
+            font-weight:bold;
+            border:1px solid rgba(255,255,255,.3);
+            margin-left:5px;
+            cursor:pointer;
+        }
+
+        form button:hover {
+            background:rgb(6, 194, 0);
+        }
+
+        form input, 
+        form button {
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            height:3rem;
+        }
+              
+        /*footer  */
+        .footer{
+            background-color: rgb(255, 255, 255);
+            margin-top: 20%;
+        }
+        .container2{
+            margin-left: 4%;
+            padding: 6%;
+            display: flex;
+            justify-content: space-around center;
+        }
+        ul{
+            list-style: none;
+        }
+        .footer-col{
+        width: 25%;
+        padding: 0 15px;
+        }
+        .footer-col h4{
+            font-size: 18px;
+            color: #000000;
+            text-transform: capitalize;
+            margin-bottom: 35px;
+            font-weight: 500;
+            position: relative;
+        }
+        .footer-col h4::before{
+            content: '';
+            position: absolute;
+            left:0;
+            bottom: -10px;
+            background-color: #00b300;
+            height: 2px;
+            box-sizing: border-box;
+            width: 50px;
+        }
+        .footer-col ul li:not(:last-child){
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a{
+            font-size: 16px;
+            text-transform: capitalize;
+            text-decoration: none;
+            font-weight: 300;
+            color: #555454;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        .footer-col ul li a:hover{
+            color: #00b300;
+            padding-left: 8px;
+        }
+        .footer-col .social-links a{
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            background-color: rgba(59, 59, 59, 0.2);
+            margin:0 10px 10px 0;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            color: #252525;
+            transition: all 0.5s ease;
+        }
+        .footer-col .social-links a:hover{
+            color: rgb(53, 53, 53);
+            background-color: #00b300;
+        }
+
+        /*responsive*/
+        @media(max-width: 767px){
+        .footer-col{
+            width: 50%;
+            margin-bottom: 30px;
+        }
+        }
+        @media(max-width: 574px){
+        .footer-col{
+            width: 100%;
+        }
+        }
+        .footer-col ul{
+            font-size: 16px;
+            color: #474747;
+        }
+        .footer-col ul li{
+            margin-bottom: 10px;
+        }
+        .footer-col ul{
+            text-transform: capitalize;
+        }
+      
+    </style>
+
+  </body>
+
+</html>
