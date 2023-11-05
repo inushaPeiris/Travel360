@@ -561,3 +561,10 @@ ul{
 .footer-col ul{
     text-transform: capitalize;
 }
+
+.copy-right{
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    color: #474747;
+}
